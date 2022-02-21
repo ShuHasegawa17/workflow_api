@@ -1,0 +1,68 @@
+get:
+  tags:
+    - "users"
+  summary: "ユーザ一覧取得"
+  description: ユーザの一覧を返す
+  operationId: findUsers
+  parameters:
+    - name: conditions
+      in: query # query-URLパラメータ?id。path-pathパラメータ/{id}
+      description: フィルタ条件
+      required: false
+      style: form
+      schema:
+        type: array
+        items:
+          type: string
+    - name: limit
+      in: query
+      description: 一覧の最大件数
+      required: false
+      schema:
+        type: integer
+        format: int32
+  responses:
+    "200":
+      description: ユーザモデルのJSON形式の配列
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../components/schemas/User.yaml"
+          examples: #参照呼出し時は、exampleではなく、examplesにする。
+            users: #参照先のモデル
+              #$ref: "#/components/examples/userExample"
+              $ref: "../example/user.yaml#/examples/users"
+    default:
+      description: unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/Error.yaml"
+post:
+  tags:
+    - "users"
+  summary: "ユーザ新規作成"
+  operationId: "createUser"
+  description: "ユーザの新規作成"
+  parameters: [] # postはURLパラメータはなし
+  requestBody: # リクエストボディ
+    description: "ユーザを作成する"
+    required: true
+    content:
+      application/json:
+        schema: #postするオブジェクト
+          $ref: "../components/schemas/User.yaml"
+        examples:
+          user:
+            $ref: "../example/user.yaml#/examples/userModel"
+  responses:
+    "201": #createは201
+      description: "CREATED"
+    default:
+      description: unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/Error.yaml"

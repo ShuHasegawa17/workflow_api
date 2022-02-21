@@ -1,0 +1,9 @@
+description: "自動採番ID"
+type: object
+required:
+  - id
+properties:
+  id:
+    title: "ID"
+    type: "integer"
+    readOnly: true

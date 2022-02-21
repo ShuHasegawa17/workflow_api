@@ -1,0 +1,24 @@
+{
+  "name": "workflow_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@apidevtools/swagger-cli": "^4.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/swagger-cli bundle -o ./build/openapi.yaml -t yaml ./api/openapi.yaml"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShuHasegawa17/workflow_api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShuHasegawa17/workflow_api/issues"
+  },
+  "homepage": "https://github.com/ShuHasegawa17/workflow_api#readme"
+}

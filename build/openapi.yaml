@@ -1,0 +1,250 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Sample API
+  description: ワークフロー画面のバックエンドのAPI群。モックとしても使用する。a
+servers:
+  - url: 'http://localhost:8080'
+    description: ローカル環境
+  - url: 'https://wf-rest.herokuapp.com'
+    description: デモ環境
+paths:
+  /users:
+    get:
+      tags:
+        - users
+      summary: ユーザ一覧取得
+      description: ユーザの一覧を返す
+      operationId: findUsers
+      parameters:
+        - name: conditions
+          in: query
+          description: フィルタ条件
+          required: false
+          style: form
+          schema:
+            type: array
+            items:
+              type: string
+        - name: limit
+          in: query
+          description: 一覧の最大件数
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: ユーザモデルのJSON形式の配列
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+              examples:
+                users:
+                  value:
+                    - id: '1'
+                      name: テスト太郎
+                      userId: test01
+                      status: active
+                    - id: '2'
+                      name: サンプル次郎A
+                      userId: test02
+                      status: active
+                    - id: '3'
+                      name: ユーザ０１
+                      userId: user01
+                      status: active
+                    - id: '4'
+                      name: ユーザ０２
+                      userId: user02
+                      status: inactive
+                    - id: '5'
+                      name: ユーザ０３
+                      userId: user03
+                      status: pending
+                    - id: '6'
+                      name: ユーザ０４
+                      userId: user04
+                      status: active
+                    - id: '7'
+                      name: ユーザ０５
+                      userId: user05
+                      status: inactive
+                    - id: '8'
+                      name: ユーザ０６
+                      userId: user06
+                      status: pending
+                    - id: '9'
+                      name: ユーザ０７
+                      userId: user07
+                      status: active
+                    - id: '10'
+                      name: ユーザ０８
+                      userId: user08
+                      status: pending
+                    - id: '11'
+                      name: ユーザ０９
+                      userId: user09
+                      status: active
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - users
+      summary: ユーザ新規作成
+      operationId: createUser
+      description: ユーザの新規作成
+      parameters: []
+      requestBody:
+        description: ユーザを作成する
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples:
+              user:
+                value:
+                  name: サンプル花子
+                  userId: hanako01
+                  status: inactive
+      responses:
+        '201':
+          description: CREATED
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/users/{userId}':
+    get:
+      tags:
+        - users
+      summary: ユーザ情報取得
+      operationId: getUser
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: ユーザ一件の情報
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                user:
+                  value:
+                    id: '1'
+                    name: テスト太郎
+                    userId: test01
+                    status: active
+    patch:
+      tags:
+        - users
+      summary: ユーザ情報更新
+      operationId: updateUser
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        description: ユーザ更新データ
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            examples:
+              user:
+                $ref: '#/paths/~1users/post/requestBody/content/application~1json/examples/user'
+      responses:
+        '200':
+          description: UPDATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                user:
+                  $ref: '#/paths/~1users~1%7BuserId%7D/get/responses/200/content/application~1json/examples/user'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - users
+      summary: ユーザ削除
+      operationId: deleteUser
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '204':
+          description: DELETED
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      description: ユーザID
+      required: true
+      schema:
+        type: string
+  schemas:
+    User:
+      description: ユーザ
+      allOf:
+        - $ref: '#/components/schemas/UserId'
+        - $ref: '#/components/schemas/UserModel'
+    UserId:
+      description: 自動採番ID
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          title: ID
+          type: integer
+          readOnly: true
+    UserModel:
+      description: ユーザモデル
+      type: object
+      properties:
+        name:
+          type: string
+        userId:
+          type: string
+        status:
+          type: string
+          description: user status
+          enum:
+            - pending
+            - active
+            - inactive
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'

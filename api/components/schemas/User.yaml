@@ -1,0 +1,4 @@
+description: "ユーザ"
+allOf:
+  - $ref: "./UserId.yaml"
+  - $ref: "./UserModel.yaml"

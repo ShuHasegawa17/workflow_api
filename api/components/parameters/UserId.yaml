@@ -1,0 +1,6 @@
+name: userId
+in: path #パス内にパラメータを含める
+description: "ユーザID"
+required: true
+schema:
+  type: "string"

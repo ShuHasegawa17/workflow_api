@@ -1,0 +1,201 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Sample API
+  description: "ワークフロー画面のバックエンドのAPI群。モックとしても使用する。"
+servers:
+  - url: "http://localhost:8080"
+    description: "ローカル環境"
+  - url: "https://wf-rest.herokuapp.com"
+    description: "デモ環境"
+paths:
+  /users:
+    get:
+      tags:
+        - "users"
+      summary: "ユーザ一覧取得"
+      description: ユーザの一覧を返す
+      operationId: findUsers
+      parameters:
+        - name: conditions
+          in: query # query-URLパラメータ?id。path-pathパラメータ/{id}
+          description: フィルタ条件
+          required: false
+          style: form
+          schema:
+            type: array
+            items:
+              type: string
+        - name: limit
+          in: query
+          description: 一覧の最大件数
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: ユーザモデルのJSON形式の配列
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+              examples: #参照呼出し時は、exampleではなく、examplesにする。
+                users: #参照先のモデル
+                  #$ref: "#/components/examples/userExample"
+                  $ref: "./example/user.yaml#/examples/users"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      tags:
+        - "users"
+      summary: "ユーザ新規作成"
+      operationId: "createUser"
+      description: "ユーザの新規作成"
+      parameters: [] # postはURLパラメータはなし
+      requestBody: # リクエストボディ
+        description: "ユーザを作成する"
+        required: true
+        content:
+          application/json:
+            schema: #postするオブジェクト
+              $ref: "#/components/schemas/User"
+            examples:
+              user:
+                $ref: "./example/user.yaml#/examples/userModel"
+      responses:
+        "201": #createは201
+          description: "CREATED"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /users/{userId}:
+    get:
+      tags:
+        - "users"
+      summary: "ユーザ情報取得"
+      operationId: "getUser"
+      parameters:
+        - $ref: "#/components/parameters/UserId"
+      responses:
+        "200":
+          description: ユーザ一件の情報
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+              examples:
+                user:
+                  $ref: "./example/user.yaml#/examples/user"
+    patch:
+      tags:
+        - "users"
+      summary: "ユーザ情報更新"
+      operationId: "updateUser"
+      parameters:
+        - $ref: "#/components/parameters/UserId"
+      requestBody:
+        description: "ユーザ更新データ"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+            examples:
+              user:
+                $ref: "./example/user.yaml#/examples/userModel"
+      responses:
+        "200": #patch/putは200
+          description: "UPDATED"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+              examples:
+                user:
+                  $ref: "./example/user.yaml#/examples/user"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      tags:
+        - "users"
+      summary: "ユーザ削除"
+      operationId: "deleteUser"
+      parameters:
+        - $ref: "#/components/parameters/UserId"
+      responses:
+        "204": #delteは204
+          description: "DELETED"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components: # 再利用部品。$refsで参照する
+  parameters:
+    UserId:
+      name: userId
+      in: path #パス内にパラメータを含める
+      description: "ユーザID"
+      required: true
+      schema:
+        type: "string"
+  schemas:
+    UserId:
+      description: "自動採番ID"
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          title: "ID"
+          type: "integer"
+          readOnly: true
+    UserModel:
+      description: "ユーザモデル"
+      type: object
+      properties:
+        name:
+          type: "string"
+        userId:
+          type: "string"
+        status:
+          type: "string"
+          description: "user status"
+          enum:
+            - "pending"
+            - "active"
+            - "inactive"
+    User: # reqdOnly属性で事足りるので、本来UserIdとUserModelに分ける必要はない
+      description: "ユーザ"
+      allOf:
+        - $ref: "#/components/schemas/UserId"
+        - $ref: "#/components/schemas/UserModel"
+    Error:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        type:
+          type: "string"
+        message:
+          type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
