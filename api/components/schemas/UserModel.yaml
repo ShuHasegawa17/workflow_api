@@ -1,14 +1,17 @@
-description: "ユーザモデル"
+description: 'ユーザモデル'
 type: object
 properties:
   name:
-    type: "string"
+    type: 'string'
+    example: 'たんじろう'
   userId:
-    type: "string"
+    type: 'string'
+    example: 'tan01'
   status:
-    type: "string"
-    description: "user status"
+    type: 'string'
+    description: 'user status'
     enum:
-      - "pending"
-      - "active"
-      - "inactive"
+      - 'pending'
+      - 'active'
+      - 'inactive'
+    example: 'pending'

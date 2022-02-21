@@ -1,9 +1,10 @@
-description: "自動採番ID"
+description: '自動採番ID'
 type: object
 required:
   - id
 properties:
   id:
-    title: "ID"
-    type: "integer"
+    title: 'ID'
+    type: 'integer'
     readOnly: true
+    example: 1

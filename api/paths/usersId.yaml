@@ -1,66 +1,57 @@
 get:
   tags:
-    - "users"
-  summary: "ユーザ情報取得"
-  operationId: "getUser"
+    - 'users'
+  summary: 'ユーザ情報取得'
+  operationId: 'getUser'
   parameters:
-    - $ref: "../components/parameters/UserId.yaml"
+    - $ref: '../components/parameters/UserId.yaml'
   responses:
-    "200":
+    '200':
       description: ユーザ一件の情報
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/User.yaml"
-          examples:
-            user:
-              $ref: "../example/user.yaml#/examples/user"
+            $ref: '../components/schemas/User.yaml'
 patch:
   tags:
-    - "users"
-  summary: "ユーザ情報更新"
-  operationId: "updateUser"
+    - 'users'
+  summary: 'ユーザ情報更新'
+  operationId: 'updateUser'
   parameters:
-    - $ref: "../components/parameters/UserId.yaml"
+    - $ref: '../components/parameters/UserId.yaml'
   requestBody:
-    description: "ユーザ更新データ"
+    description: 'ユーザ更新データ'
     required: true
     content:
       application/json:
         schema:
-          $ref: "../components/schemas/User.yaml"
-        examples:
-          user:
-            $ref: "../example/user.yaml#/examples/userModel"
+          $ref: '../components/schemas/User.yaml'
   responses:
-    "200": #patch/putは200
-      description: "UPDATED"
+    '200': #patch/putは200
+      description: 'UPDATED'
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/User.yaml"
-          examples:
-            user:
-              $ref: "../example/user.yaml#/examples/user"
+            $ref: '../components/schemas/User.yaml'
     default:
       description: unexpected error
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/Error.yaml"
+            $ref: '../components/schemas/Error.yaml'
 delete:
   tags:
-    - "users"
-  summary: "ユーザ削除"
-  operationId: "deleteUser"
+    - 'users'
+  summary: 'ユーザ削除'
+  operationId: 'deleteUser'
   parameters:
-    - $ref: "../components/parameters/UserId.yaml"
+    - $ref: '../components/parameters/UserId.yaml'
   responses:
-    "204": #delteは204
-      description: "DELETED"
+    '204': #delteは204
+      description: 'DELETED'
     default:
       description: unexpected error
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/Error.yaml"
+            $ref: '../components/schemas/Error.yaml'

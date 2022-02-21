@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: Sample API
-  description: ワークフロー画面のバックエンドのAPI群。モックとしても使用する。a
+  description: ワークフロー画面のバックエンドのAPI群。モックとしても使用する。
 servers:
   - url: 'http://localhost:8080'
     description: ローカル環境
@@ -42,53 +42,51 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
-              examples:
-                users:
-                  value:
-                    - id: '1'
-                      name: テスト太郎
-                      userId: test01
-                      status: active
-                    - id: '2'
-                      name: サンプル次郎A
-                      userId: test02
-                      status: active
-                    - id: '3'
-                      name: ユーザ０１
-                      userId: user01
-                      status: active
-                    - id: '4'
-                      name: ユーザ０２
-                      userId: user02
-                      status: inactive
-                    - id: '5'
-                      name: ユーザ０３
-                      userId: user03
-                      status: pending
-                    - id: '6'
-                      name: ユーザ０４
-                      userId: user04
-                      status: active
-                    - id: '7'
-                      name: ユーザ０５
-                      userId: user05
-                      status: inactive
-                    - id: '8'
-                      name: ユーザ０６
-                      userId: user06
-                      status: pending
-                    - id: '9'
-                      name: ユーザ０７
-                      userId: user07
-                      status: active
-                    - id: '10'
-                      name: ユーザ０８
-                      userId: user08
-                      status: pending
-                    - id: '11'
-                      name: ユーザ０９
-                      userId: user09
-                      status: active
+                example:
+                  - id: '1'
+                    name: テスト太郎
+                    userId: test01
+                    status: active
+                  - id: '2'
+                    name: サンプル次郎A
+                    userId: test02
+                    status: active
+                  - id: '3'
+                    name: ユーザ０１
+                    userId: user01
+                    status: active
+                  - id: '4'
+                    name: ユーザ０２
+                    userId: user02
+                    status: inactive
+                  - id: '5'
+                    name: ユーザ０３
+                    userId: user03
+                    status: pending
+                  - id: '6'
+                    name: ユーザ０４
+                    userId: user04
+                    status: active
+                  - id: '7'
+                    name: ユーザ０５
+                    userId: user05
+                    status: inactive
+                  - id: '8'
+                    name: ユーザ０６
+                    userId: user06
+                    status: pending
+                  - id: '9'
+                    name: ユーザ０７
+                    userId: user07
+                    status: active
+                  - id: '10'
+                    name: ユーザ０８
+                    userId: user08
+                    status: pending
+                  - id: '11'
+                    name: ユーザ０９
+                    userId: user09
+                    status: active
         default:
           description: unexpected error
           content:
@@ -109,12 +107,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/User'
-            examples:
-              user:
-                value:
-                  name: サンプル花子
-                  userId: hanako01
-                  status: inactive
       responses:
         '201':
           description: CREATED
@@ -138,14 +130,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                user:
-                  value:
-                    id: '1'
-                    name: テスト太郎
-                    userId: test01
-                    status: active
+                User:
+                  $ref: '#/components/schemas/User'
     patch:
       tags:
         - users
@@ -160,9 +146,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/User'
-            examples:
-              user:
-                $ref: '#/paths/~1users/post/requestBody/content/application~1json/examples/user'
       responses:
         '200':
           description: UPDATED
@@ -170,9 +153,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-              examples:
-                user:
-                  $ref: '#/paths/~1users~1%7BuserId%7D/get/responses/200/content/application~1json/examples/user'
         default:
           description: unexpected error
           content:
@@ -220,14 +200,17 @@ components:
           title: ID
           type: integer
           readOnly: true
+          example: 1
     UserModel:
       description: ユーザモデル
       type: object
       properties:
         name:
           type: string
+          example: たんじろう
         userId:
           type: string
+          example: tan01
         status:
           type: string
           description: user status
@@ -235,6 +218,7 @@ components:
             - pending
             - active
             - inactive
+          example: pending
     Error:
       type: object
       properties:

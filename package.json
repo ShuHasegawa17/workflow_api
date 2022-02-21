@@ -9,7 +9,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "./node_modules/.bin/swagger-cli bundle -o ./build/openapi.yaml -t yaml ./api/openapi.yaml"
+    "build": ".\\node_modules\\.bin\\swagger-cli bundle -o .\\build\\openapi.yaml -t yaml .\\api\\openapi.yaml"
   },
   "repository": {
     "type": "git",
