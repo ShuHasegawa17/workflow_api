@@ -1,8 +1,4 @@
 User:
   $ref: "./User.yaml"
-UserId:
-  $ref: "./UserId.yaml"
-UserModel:
-  $ref: "./UserModel.yaml"
 Error:
   $ref: "./Error.yaml"
